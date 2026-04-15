@@ -59,7 +59,7 @@ export class CreateOrEdit implements OnInit {
     const data = this.clientForm.value;
 
     const request = data.id
-      ? this._clientService.update(data, data.id)
+      ? this._clientService.update(data.id, data)
       : this._clientService.create(data);
 
     request.subscribe({
