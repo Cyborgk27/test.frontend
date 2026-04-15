@@ -1,0 +1,26 @@
+<div class="p-6 bg-slate-900 min-h-screen">
+
+  <div class="flex justify-between items-center mb-6">
+    <h2 class="text-white text-2xl font-bold">Listado de Clientes</h2>
+
+    <button
+      (click)="openCreate()"
+      class="flex items-center gap-2 px-5 py-2.5 bg-indigo-600 hover:bg-indigo-500 text-white rounded-xl transition-all font-bold shadow-lg shadow-indigo-500/20 active:scale-95">
+      <span class="material-icons">add</span>
+      Nuevo Cliente
+    </button>
+  </div>
+
+  <app-table
+    [data]="clients"
+    [columns]="columns"
+    [actions]="actions">
+  </app-table>
+
+  @if (showModal) {
+    <app-create-or-edit
+      [clientData]="selectedClient"
+      (onClose)="closeModal()">
+    </app-create-or-edit>
+  }
+</div>

@@ -1,0 +1,62 @@
+<div *ngIf="isOpen" class="fixed inset-0 z-50 flex items-center justify-center p-4">
+  <div class="fixed inset-0 bg-slate-950/80 backdrop-blur-sm transition-opacity" (click)="closeModal()"></div>
+
+  <div class="relative bg-slate-800 border border-slate-700 rounded-2xl shadow-2xl transform transition-all sm:max-w-md w-full overflow-hidden">
+
+    <div class="px-6 py-4 border-b border-slate-700 flex justify-between items-center bg-slate-800/50">
+      <h3 class="text-xl font-bold text-white">Nuevo Movimiento</h3>
+      <button (click)="closeModal()" class="text-slate-500 hover:text-white transition-colors">
+        <span class="material-icons">close</span>
+      </button>
+    </div>
+
+    <form [formGroup]="movementForm" (ngSubmit)="saveMovement()" class="p-6 space-y-5">
+
+      <div class="flex flex-col gap-2">
+        <label class="text-xs font-semibold text-slate-400 uppercase tracking-wider ml-1">Cuenta de Origen</label>
+        <select formControlName="accountId"
+          class="w-full bg-slate-900 border border-slate-700 rounded-xl px-4 py-2.5 text-slate-200 outline-none focus:ring-2 focus:ring-indigo-500/50 appearance-none cursor-pointer">
+          <option value="" disabled>Seleccione una cuenta</option>
+          @for (acc of accounts; track acc.id) {
+            <option [value]="acc.id">{{ acc.accountNumber }} - {{ acc.client.name }}</option>
+          }
+        </select>
+      </div>
+
+      <div class="flex flex-col gap-2">
+        <label class="text-xs font-semibold text-slate-400 uppercase tracking-wider ml-1">Tipo de Operación</label>
+        <select formControlName="movementType"
+          class="w-full bg-slate-900 border border-slate-700 rounded-xl px-4 py-2.5 text-slate-200 outline-none focus:ring-2 focus:ring-indigo-500/50 appearance-none cursor-pointer">
+          <option value="Retiro">Retiro (Débito)</option>
+          <option value="Deposito">Depósito (Crédito)</option>
+        </select>
+      </div>
+
+      <div class="flex flex-col gap-2">
+        <label class="text-xs font-semibold text-slate-400 uppercase tracking-wider ml-1">Monto</label>
+        <div class="relative">
+          <span class="absolute left-4 top-2.5 text-slate-500">$</span>
+          <input type="number" formControlName="value"
+            class="w-full bg-slate-900 border border-slate-700 rounded-xl pl-8 pr-4 py-2.5 text-slate-200 outline-none focus:ring-2 focus:ring-indigo-500/50 placeholder:text-slate-600"
+            placeholder="0.00">
+        </div>
+      </div>
+
+      <div *ngIf="errorMessage" class="p-3 bg-red-900/20 border border-red-500/50 text-red-400 rounded-xl text-sm flex items-center gap-2">
+        <span class="material-icons text-sm">error_outline</span>
+        {{ errorMessage }}
+      </div>
+
+      <div class="flex flex-col gap-3 pt-2">
+        <button type="submit" [disabled]="movementForm.invalid || loading"
+          class="w-full flex items-center justify-center gap-2 px-6 py-3 bg-indigo-600 hover:bg-indigo-500 text-white rounded-xl transition-all font-bold shadow-lg shadow-indigo-500/20 active:scale-95 disabled:opacity-50 disabled:active:scale-100">
+          {{ loading ? 'Procesando...' : 'Confirmar Transacción' }}
+        </button>
+        <button type="button" (click)="closeModal()"
+          class="w-full px-6 py-3 bg-slate-700/50 hover:bg-slate-700 text-slate-300 rounded-xl transition-all font-bold">
+          Cancelar
+        </button>
+      </div>
+    </form>
+  </div>
+</div>
